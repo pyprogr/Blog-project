@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const {MONGOURI} = require("./keys");
-const PORT = 8000;
+const PORT = 8001;
 
 //Connection to mongodb
 
@@ -20,14 +20,14 @@ mongoose.connection.on("error" , (error)=>{
 
 require("./models/post");
 require("./models/category");
+require("./models/comment");
 
 app.use(express.json());
 
 //Routes import
 app.use(require("./routes/post"));
 app.use(require("./routes/category"));
-
-
+app.use(require("./routes/comment"));
 
 app.listen(PORT , ()=>{
   console.log("server started at "+ PORT);

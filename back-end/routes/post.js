@@ -15,9 +15,64 @@ router.get("/posts", (req , res) => {
   });
 });
 
+router.get("/featured-posts", (req , res) => {
+  Post.find({isfeatured: true})
+  .populate("category", "_id name")
+  .then((posts) => {
+    res.json({ posts });
+  })
+  .catch((err)=>{
+    console.log(err);
+  });
+});
+
+router.get("/posts/:id", (req , res) => {
+  Post.find({ _id: req.params.id })
+  .populate("category" , "_id name")
+  .then((posts) => {
+    res.json({ posts });
+  })
+  .catch((err)=>{required
+    console.log(err);
+  });
+});
+
+router.get("/posts/category/:catId", (req , res) => {
+  Post.find({ category: { _id:req.params.catId } })
+  .populate("category" , "_id name")
+  .then((posts) => {
+    res.json({ posts });
+  })
+  .catch((err)=>{required
+    console.log(err);
+  });
+});
+
+router.get("/trending-posts", (req , res) => {
+  Post.find().sort({numOfLikes: -1 })
+  .populate("category", "_id name")
+  .then((posts) => {
+    res.json({ posts });
+  })
+  .catch((err)=>{required
+    console.log(err);
+  });
+});
+
+router.get("/fresh-stories", (req , res) => {
+  Post.find().sort({_id: -1 }).limit(3)
+  .populate("category", "_id name")
+  .then((posts) => {
+    res.json({ posts });
+  })
+  .catch((err)=>{required
+    console.log(err);
+  });
+});
+
 router.post("/new-posts", (req , res) => {
-  const {title , description , imgurl , category } = req.body;
-  if(!title || !description || !imgurl || !category){
+  const {title , description , imgurl , category , numOfLikes , isfeatured} = req.body;
+  if(!title || !description || !imgurl || !category || !numOfLikes || !isfeatured){
     res.json({err: "All fields are mandatory."});
   }
 
@@ -27,7 +82,11 @@ router.post("/new-posts", (req , res) => {
       title,
       description,
       imgurl,
+      numOfLikes,
+      isfeatured,
       category: cat,
+
+
     });
 
     post.save().then(() =>{

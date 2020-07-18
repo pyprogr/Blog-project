@@ -16,12 +16,19 @@ const post = mongoose.Schema({
     type:String,
     required:true,
   },
-
+  numOfLikes:{
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  isfeatured:{
+    type: Boolean,
+    default: false,
+  },
   category:{
     type:ObjectId,
     ref:"Category",
   },
 
 });
-
 mongoose.model("Post",post);

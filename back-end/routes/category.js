@@ -14,6 +14,17 @@ router.get("/categories", (req , res) => {
   });
 });
 
+router.get("/category-num", (req , res) => {
+  Category.count({})
+  .populate("category", "_id name")
+  .then((categories) => {
+    res.json({ categories });
+  })
+  .catch((err)=>{
+    console.log(err);
+  });
+});
+
 router.post("/new-category", (req , res) => {
   const {name} = req.body;
   if(!name ){
@@ -31,6 +42,5 @@ router.post("/new-category", (req , res) => {
     console.log(err);
   });
 });
-
 
 module.exports = router;
